@@ -1,7 +1,7 @@
 export class Store {
 	private static _store: IShareableInstance[] = [];
 
-	public static Add(name: string | symbol, initialValue?: any): Shareable {
+	public static add(name: string | symbol, initialValue?: any): Shareable {
 		const shareableInstance = this._store.find(shareableInstance => shareableInstance.name === name);
 		if (shareableInstance) {
 			return shareableInstance.instance;
@@ -9,14 +9,14 @@ export class Store {
 
 		const newShareableInstance = {
 			name,
-			instance: Shareable.Builder(initialValue)
+			instance: Shareable.builder(initialValue)
 		}
 
 		this._store.push(newShareableInstance);
 		return newShareableInstance.instance;
 	}
 
-	public static Remove(name: string | symbol) {
+	public static remove(name: string | symbol) {
 		const index = this._store.findIndex(shareableInstance => shareableInstance.name === name);
 		if (index === -1) {
 			return;
@@ -25,7 +25,7 @@ export class Store {
 		this._store.splice(index, 1);
 	}
 
-	public static GetInstance(name: string | symbol): IShareableInstance | undefined {
+	public static getInstance(name: string | symbol): IShareableInstance | undefined {
 		return this._store.find(shareableInstance => shareableInstance.name === name);
 	}
 }
@@ -46,7 +46,7 @@ export class Shareable {
 		this._value = newValue;
 	}
 
-	public static Builder(value: any) {
+	public static builder(value: any) {
 		const newInstance = new Shareable();
 		newInstance.value = value;
 		return newInstance;
@@ -58,7 +58,7 @@ export function Share<T extends object, K extends keyof T>(
 	...args: any[]
 ): PropertyDecorator {
 	return (target, key) => {
-		const instance = Store.Add(bindingPropertyName);
+		const instance = Store.add(bindingPropertyName);
 
 		Object.defineProperty(target, key, {
 			get(): T[K] {
