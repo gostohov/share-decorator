@@ -9,7 +9,7 @@ export class Store {
 
 		const newShareableInstance = {
 			name,
-			instance: Shareable.builder(initialValue)
+			instance: new Shareable(initialValue)
 		}
 
 		this._store.push(newShareableInstance);
@@ -46,10 +46,8 @@ export class Shareable {
 		this._value = newValue;
 	}
 
-	public static builder(value: any) {
-		const newInstance = new Shareable();
-		newInstance.value = value;
-		return newInstance;
+	constructor(value: any) {
+		this._value = value;
 	}
 }
 
